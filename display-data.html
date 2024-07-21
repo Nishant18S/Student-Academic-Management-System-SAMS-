@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Data</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 20px auto;
+            background-color: #18c8ae;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto; /* Allow horizontal scroll if necessary */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%; /* Ensure table fills the container */
+            border-collapse: collapse;
+            margin-top: 20px;
+            white-space: nowrap; /* Prevent text wrapping in cells */
+        }
+
+        th,
+        td {
+            padding: 12px; /* Adjusted padding for better spacing */
+            text-align: left;
+            border: 1px solid #ccc;
+            white-space: normal; /* Reset white-space for content cells */
+            word-break: break-word; /* Allow long words to break */
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        img {
+            max-width: 200px;
+            max-height: 300px;
+            display: block;
+            margin: auto;
+            /* border-radius: 50%;  Rounded profile picture */
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+        }
+
+        /* Hover effect on table rows */
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Media Query for Responsive Design */
+        @media (max-width: 600px) {
+            table {
+                font-size: 14px;
+            }
+        }
+
+        h1, p {
+            text-align: center;
+        }
+
+        /* Print Styles */
+        @media print {
+    .container {
+        background-color: #fff; /* Set background color for printing */
+        box-shadow: none; /* Remove box shadow for printing */
+        padding: 20px; /* Add padding to maintain spacing */
+    }
+
+    h1, p {
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 8px; /* Adjusted padding for printing */
+        text-align: left;
+        border: 1px solid #000; /* Black border for cells in print */
+    }
+
+    img {
+        max-width: 100%; /* Ensure images fit within the printable area */
+        height: auto; /* Maintain aspect ratio */
+        display: block;
+        margin: auto;
+    }
+
+    .print-button {
+        display: none; /* Hide print button in print mode */
+    }
+
+    /* Adjust spacing for better readability */
+    .container > * {
+        margin-bottom: 20px;
+    }
+
+    /* Additional styles for headers */
+    h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    /* Ensure the footer text is also visible in print */
+    .footer {
+        margin-top: 20px;
+        font-size: 14px;
+        text-align: center;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Common Application Form</h1>
+        <p>Admission to Higher Secondary School</p>
+        <p>Academic Session(2024-2025)</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Seal_of_Odisha.png" height="200" width="250">
+        <p>Department of School & Mass Education, Government Of Odisha</p>
+        <p>Phase-1</p>
+
+        <div id="successMessage" style="text-align: center; margin-top: 20px; color: green;"></div>
+
+        <table id="submittedTable" border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile No.</th>
+                    <th>Email ID</th>
+                    <th>Date of Birth</th>
+                    <th>Course</th>
+                    <th>Marks Obtained</th>
+                    <th>Percentage</th>
+                    <th>Payments</th>
+                    <th>Profile Photo</th>
+                </tr>
+            </thead>
+            <tbody id="submittedBody">
+                <!-- Data rows will be inserted here dynamically -->
+            </tbody>
+        </table>
+
+        <h2>Subject-wise Marks</h2>
+        <table id="subjectMarksTable" border="1">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="subjectMarksBody">
+                <!-- Subject-wise marks will be inserted here dynamically -->
+            </tbody>
+        </table>
+
+        <!-- Print Button -->
+        <button class="print-button" onclick="printData()" style="margin: 20px auto; display: block;">Print Data</button>
+    </div>
+
+    <script>
+        // JavaScript code to display submitted data
+        function displaySubmittedData() {
+            // Retrieve form data from localStorage
+            const formData = JSON.parse(localStorage.getItem('formData'));
+
+            if (formData) {
+                // Display general information
+                document.getElementById('submittedBody').innerHTML = `
+                    <tr>
+                        <td>${formData.userName}</td>
+                        <td>${formData.userMobile}</td>
+                        <td>${formData.userEmail}</td>
+                        <td>${formData.dob}</td>
+                        <td>${formData.course}</td>
+                        <td>${formData.marks}</td>
+                        <td>${formData.percentage}</td>
+                        <td>${formData.amount}</td>
+                        <td><img src="${formData.profilePic}" alt="Profile Picture"></td>
+                    </tr>
+                `;
+
+                // Display subject-wise marks
+                const subjectMarks = formData.subjects;
+                const subjectMarksBody = document.getElementById('subjectMarksBody');
+
+                for (let subject in subjectMarks) {
+                    const marks = subjectMarks[subject];
+                    let grade = '';
+                    let status = 'Pass';
+
+                    if (marks >= 90) {
+                        grade = 'A+';
+                    } else if (marks >= 80) {
+                        grade = 'A';
+                    } else if (marks >= 70) {
+                        grade = 'B';
+                    } else if (marks >= 60) {
+                        grade = 'C';
+                    } else if (marks >= 50) {
+                        grade = 'D';
+                    } else {
+                        grade = 'F';
+                        status = 'Fail';
+                    }
+
+                    subjectMarksBody.innerHTML += `
+                        <tr>
+                            <td>${subject}</td>
+                            <td>${marks}</td>
+                            <td>${grade}</td>
+                            <td>${status}</td>
+                        </tr>
+                    `;
+                }
+
+                // Display success message
+                document.getElementById('successMessage').innerHTML = 'Payment Successful!';
+            }
+        }
+
+        // Function to trigger printing
+        function printData() {
+            window.print();
+        }
+
+        // Call the function when the page loads
+        displaySubmittedData();
+    </script>
+
+</body>
+</html>

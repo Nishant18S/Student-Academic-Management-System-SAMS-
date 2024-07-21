@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information</title>
+    <style>
+      /* Define CSS variables for dynamic properties */
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #20e093;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.menu-container {
+    flex: 0 0 250px;
+    background-color: #fff;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.section-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    position: sticky;
+    top: 20px; /* Adjust as needed */
+    font-family: 'Arial', sans-serif; /* Dynamic font family */
+    font-size: 18px; /* Dynamic font size */
+    color: #333; /* Dynamic text color */
+}
+
+
+.menu-item {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-item:hover {
+    background-color: #ddd;
+}
+
+.content-container {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.section {
+    display: none;
+    padding: 30px; /* Increased padding for sections */
+    margin-bottom: 20px; /* Added margin between sections */
+    border: 1px solid #ccc; /* Added border to sections */
+    border-radius: 8px; /* Rounded corners for sections */
+}
+
+.section.active {
+    display: block;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    background-color: green;
+    transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+    background-color: rgb(230, 50, 56);
+}
+
+/* Style for submitted data table */
+#submittedData {
+    display: none;
+    margin-top: 30px;
+}
+
+#dataTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#dataTable th,
+#dataTable td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+#dataTable th {
+    background-color: #f0f0f0;
+}
+
+.file-upload {
+    display: flex;
+    align-items: center;
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}
+
+.file-upload-label {
+    cursor: pointer;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.image-preview {
+    margin-left: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-width: 200px;
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 100%;
+    height: auto;
+}
+
+.form-group label::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
+.menu-container {
+    flex: 0 0 250px; /* Fixed width for menu */
+    background-color: #fff;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.section-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 50px; /* Add spacing between menu items */
+    padding: 20px;
+}
+
+.menu-item {
+    cursor: pointer;
+    padding: 15px 20px; /* Adjust padding for better spacing */
+    margin-bottom: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    text-align: center; /* Center align text */
+}
+
+.menu-item:hover {
+    background-color: #f0f0f0; /* Light background on hover */
+}
+
+.menu-item.active {
+    background-color: #ddd; /* Active menu item background color */
+    color: #333;
+    font-weight: bold;
+}
+
+
+.menu-item:hover {
+    background-color: #e0e0e0; /* Light background color on hover */
+    color: #555; /* Darker text color on hover */
+}
+
+.active-menu-item {
+    background-color: #007bff; /* Active menu item background color */
+    color: #fff; /* Active menu item text color */
+}
+
+
+.section {
+    display: none; /* Initially hide all sections */
+    padding: 20px;
+}
+
+.section.active {
+    display: block; /* Show only active section */
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+}
+
+
+@media screen and (max-width: 600px) {
+    .section-menu {
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+        overflow-x: auto;
+    }
+
+    .menu-item {
+        margin: 0 8px;
+        white-space: nowrap; /* Prevent wrapping */
+    }
+}
+
+
+.logout-btn button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    background-color: red; /* Choose a suitable color */
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn button:hover {
+    background-color: darkred; /* Darken the color on hover */
+}
+td
+{
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="section-menu">
+            <button class="menu-item" onclick="toggleSection('section1')">Section 1</button>
+            <button class="menu-item" onclick="toggleSection('section2')">Section 2</button>
+            <button class="menu-item" onclick="toggleSection('section3')">Section 3</button>
+            <button class="menu-item" onclick="toggleSection('section4')">Section 4</button>
+            <button class="menu-item" onclick="logout()">Logout</button>
+        </nav>
+        
+        <main class="content-container">
+            <!-- Section 1: Personal Information -->
+            <div id="section1" class="section active">
+                <div class="section-title">Personal Information</div>
+                <div class="form-group">
+                    <label for="userName">Name: </label>
+                    <input type="text" id="userName" name="userName" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="userMobile">Mobile No.: *</label>
+                    <input type="tel" id="userMobile" name="userMobile" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email ID: *</label>
+                    <input type="email" id="userEmail" name="userEmail" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="userdob">D.O.B: *</label>
+                    <input type="date" id="userdob" name="userdob" required>
+                </div>
+                <div class="form-group">
+                    <button id="nextSection1" onclick="nextSection('section2')">Next Section</button>
+                </div>
+            </div>
+            
+        
+            <!-- Section 2: Profile Picture -->
+            <div id="section2" class="section">
+                <div class="section-title">Profile Picture</div>
+                <div class="form-group file-upload">
+                    <label for="profile-pic" class="file-upload-label">Choose Profile Picture</label>
+                    <input type="file" id="profile-pic" name="profile-pic" accept="image/*" onchange="previewImage(event)">
+                    <div class="image-preview" id="image-preview">
+                        <img id="preview-image" src="https://t4.ftcdn.net/jpg/05/65/22/41/360_F_565224180_QNRiRQkf9Fw0dKRoZGwUknmmfk51SuSS.jpg" alt="Preview">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button id="prevSection2" onclick="prevSection('section1')">Previous Section</button><br><br><br>
+                    <button id="nextSection2" onclick="nextSection('section3')">Next Section</button>
+                </div>
+            </div>
+        
+            <!-- Section 3: Academic Information -->
+            <div id="section3" class="section">
+                <div class="section-title">Academic Information</div>
+                <div class="form-group">
+                    <label for="course">Course: *</label>
+                    <select id="course" name="course" required>
+                        <option value="">Select Course</option>
+                        <option value="science">Science</option>
+                        <option value="commerce">Commerce</option>
+                        <option value="arts">Arts</option>
+                    </select>
+                </div>
+                <table id="marksTable" border="1" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Obtained Marks</th>
+                            <th>Total Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mathematics</td>
+                            <td><input type="number" id="maths" name="maths" min="0" max="100" required oninput="calculateTotalMarks()"></td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>English</td>
+                            <td><input type="number" id="english" name="english" min="0" max="100" required oninput="calculateTotalMarks()"></td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Odia</td>
+                            <td><input type="number" id="odia" name="odia" min="0" max="100" required oninput="calculateTotalMarks()"></td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Social Science</td>
+                            <td><input type="number" id="socialScience" name="socialScience" min="0" max="100" required oninput="calculateTotalMarks()"></td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>General Science</td>
+                            <td><input type="number" id="generalScience" name="generalScience" min="0" max="100" required oninput="calculateTotalMarks()"></td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Hindi/Sanskrit</td>
+                            <td><input type="number" id="hindiSanskrit" name="hindiSanskrit" min="0" max="100" required oninput="calculateTotalMarks()"></td>
+                            <td>100</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="form-group">
+                    <label for="marks">Total Marks Obtained: *</label>
+                    <input type="number" id="marks" name="marks" readonly >
+                </div>
+                <div class="form-group">
+                    <label for="percentage">Percentage: *</label>
+                    <input type="number" id="percentage" name="percentage" readonly>
+                </div>
+                <div class="form-group">
+                    <button id="prevSection3" onclick="prevSection('section2')">Previous Section</button><br><br><br>
+                    <button id="nextSection3" onclick="nextSection('section4')">Next Section</button>
+                </div>
+            </div>
+        
+           <!-- Section 4: Payment Information -->
+<div id="section4" class="section">
+    <div class="section-title">Payment Information</div>
+    <!-- Payment form fields -->
+    <div class="form-group">
+        <label for="amount">Amount: *</label>
+        <input type="text" id="amount" name="amount" value="200" readonly>
+    </div>
+
+    <div class="form-group">
+        <button id="prevSection4" onclick="prevSection('section3')">Previous Section</button><br><br><br>
+        <button id="submitPayment" onclick="submitPayment()">Submit Payment</button>
+    </div>
+    <div class="form-group">
+        <button><a href="edit-profile.html">Edit Profile</a></button>
+        <br><br>
+        <button id="submitForm" onclick="submitForm()">Submit</button>
+    </div>
+</div>
+
+        </main>
+    </div>
+
+    <!-- Table to display submitted data -->
+    <div id="submittedData">
+        <h2>Submitted Data</h2>
+        <table id="dataTable" border="1" width="100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile No.</th>
+                    <th>Email ID</th>
+                    <th>Date of Birth</th>
+                    <th>Course</th>
+                    <th>Marks Obtained</th>
+                    <th>Payment</th>
+                    <th>Profile Photo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+    // Array of possible background colors
+    const colors = ['#e5f3f3', '#f8e0e0', '#eaf7e3', '#e6e6fa'];
+
+    // Get all sections
+    const sections = document.querySelectorAll('.section');
+
+    // Assign random background color and additional styles to each section
+    sections.forEach(function(section) {
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        section.style.backgroundColor = randomColor;
+        section.style.padding = '30px';
+        section.style.borderRadius = '8px';
+        section.style.marginBottom = '20px';
+        section.style.border = '1px solid #ccc';
+    });
+});
+function toggleSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        const isActive = section.classList.contains('active');
+
+        // Hide all sections
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(sec => sec.classList.remove('active'));
+
+        // Show clicked section if it was not active, otherwise hide it
+        if (!isActive) {
+            section.classList.add('active');
+        }
+
+        // Highlight active menu item
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            if (item.getAttribute('onclick').includes(sectionId)) {
+                item.classList.add('active-menu-item');
+            } else {
+                item.classList.remove('active-menu-item');
+            }
+        });
+    }
+}
+
+
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        const offsetTop = section.offsetTop;
+        window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+        });
+        
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(sec => {
+            sec.classList.remove('active');
+        });
+        section.classList.add('active');
+    }
+}
+    
+    function logout() {
+    // Perform logout actions here, such as clearing session data
+    // For example, you can clear local storage or cookies
+    localStorage.removeItem('userData'); // Example of clearing user data from localStorage
+
+    // Redirect to the login page or homepage after logout
+    window.location.href = 'login.html'; // Replace with your actual login or homepage URL
+}
+
+
+   // Function to show next section and hide current section
+   function nextSection(nextSectionId) {
+        document.getElementById("section1").classList.remove("active");
+        document.getElementById("section2").classList.remove("active");
+        document.getElementById("section3").classList.remove("active");
+        document.getElementById("section4").classList.remove("active");
+
+        document.getElementById(nextSectionId).classList.add("active");
+    }
+
+    // Function to show previous section and hide current section
+    function prevSection(prevSectionId) {
+        document.getElementById("section1").classList.remove("active");
+        document.getElementById("section2").classList.remove("active");
+        document.getElementById("section3").classList.remove("active");
+        document.getElementById("section4").classList.remove("active");
+
+        document.getElementById(prevSectionId).classList.add("active");
+    }
+
+    // Function to validate if all sections are completed
+function validateForm() {
+    const sections = document.querySelectorAll('.section');
+
+    for (let i = 0; i < sections.length; i++) {
+        const inputs = sections[i].querySelectorAll('input[required], select[required], textarea[required]');
+        for (let j = 0; j < inputs.length; j++) {
+            // Trim whitespace and check if empty
+            if (inputs[j].value.trim() === '') {
+                return false; // Return false if any required field is empty
+            }
+        }
+    }
+
+    return true; // Return true if all required fields are filled
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Load form data from localStorage if available
+    const formData = JSON.parse(localStorage.getItem("formData"));
+    if (formData) {
+        document.getElementById("userName").value = formData.userName || "";
+        document.getElementById("userMobile").value = formData.userMobile || "";
+        document.getElementById("userEmail").value = formData.userEmail || "";
+        document.getElementById("userdob").value = formData.dob || "";
+        document.getElementById("course").value = formData.course || "";
+        document.getElementById("marks").value = formData.marks || "";
+        document.getElementById("percentage").value = formData.percentage || "";
+
+        // Set values for subjects, interests, and profile pic preview accordingly
+        // Example:
+        document.getElementById("maths").value = formData.subjects.Mathematics || "";
+        // Set profile pic preview
+        document.getElementById("preview-image").src = formData.profilePic || "";
+    } else {
+        alert("Error: Required user information not found in localStorage.");
+    }
+});
+
+function submitForm() {
+    if (validateForm()) {
+        // Gather all form data
+        const formData = {
+            userName: document.getElementById("userName").value,
+            userMobile: document.getElementById("userMobile").value,
+            userEmail: document.getElementById("userEmail").value,
+            dob: document.getElementById("userdob").value,
+            course: document.getElementById("course").value,
+            marks: document.getElementById("marks").value,
+            percentage: document.getElementById("percentage").value,
+            subjects: {
+                Mathematics: document.getElementById("maths").value,
+                English: document.getElementById("english").value,
+                MIL: document.getElementById("odia").value,
+                "Social Science": document.getElementById("socialScience").value,
+                "General Science": document.getElementById("generalScience").value,
+                "Hindi/Sanskrit": document.getElementById("hindiSanskrit").value
+            },
+            profilePic: document.getElementById("preview-image").src, // Get the src of the preview image
+            amount: "Payment Successful" // Set payment status here
+        };
+
+        // Store formData in localStorage
+        localStorage.setItem('formData', JSON.stringify(formData));
+
+        // Alert user before redirection
+        alert("Form submitted successfully!");
+
+        // Redirect to display-data.html
+        window.location.href = 'display-data.html';
+    } else {
+        alert("Please fill in all required fields before submitting.");
+    }
+}
+
+function logout() {
+    // Clear localStorage on logout
+    localStorage.removeItem('formData');
+
+    // Redirect to the login page or homepage after logout
+    window.location.href = 'login.html'; // Replace with your actual login or homepage URL
+}
+
+
+// Example function to reset form fields (if needed)
+function resetForm() {
+    document.getElementById("userName").value = "";
+    document.getElementById("userMobile").value = "";
+    document.getElementById("userEmail").value = "";
+    document.getElementById("userdob").value = "";
+    document.getElementById("course").value = "";
+    document.getElementById("marks").value = "";
+    document.getElementById("preview-image").src = "https://t4.ftcdn.net/jpg/05/65/22/41/360_F_565224180_QNRiRQkf9Fw0dKRoZGwUknmmfk51SuSS.jpg"; // Reset preview image
+}
+
+// Retrieve user data from localStorage (example)
+const formData = JSON.parse(localStorage.getItem("formData"));
+if (formData) {
+    document.getElementById("userName").value = formData.userName || "";
+    document.getElementById("userMobile").value = formData.userMobile || "";
+    document.getElementById("userEmail").value = formData.userEmail || "";
+    document.getElementById("userdob").value = formData.dob || "";
+    document.getElementById("course").value = formData.course || "";
+    document.getElementById("marks").value = formData.marks || "";
+    document.getElementById("percentage").value = formData.percentage || "";
+    // Set values for subjects, interests, and profile pic preview accordingly
+    // Example:
+    document.getElementById("maths").value = formData.subjects.Mathematics || "";
+    // Set profile pic preview
+    document.getElementById("preview-image").src = formData.profilePic || "";
+} else {
+   // alert("Error: Required user information not found in localStorage.");
+}
+
+    // Retrieve user data from localStorage (example)
+    const userName = localStorage.getItem("userName");
+    const userMobile = localStorage.getItem("userMobile");
+    const userEmail = localStorage.getItem("userEmail");
+
+    // Populate personal information fields if available in localStorage
+    if (userName && userMobile && userEmail) {
+        document.getElementById("userName").value = userName;
+        document.getElementById("userMobile").value = userMobile;
+        document.getElementById("userEmail").value = userEmail;
+
+        // Mark the first section as active initially
+        document.getElementById("section1").classList.add("active");
+    } else {
+        //alert("Error: Required user information not found in localStorage.");
+    }
+</script>
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('preview-image');
+            output.src = reader.result;
+
+            // Dynamically adjust CSS of .image-preview
+            var imagePreview = document.getElementById('image-preview');
+            imagePreview.style.border = '2px dashed #ccc'; // Example: change border style
+            imagePreview.style.padding = '20px'; // Example: change padding
+            imagePreview.style.maxWidth = '300px'; // Example: change max-width
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+    // Array of possible background colors
+    const colors = ['#e5f3f3', '#f8e0e0', '#eaf7e3', '#e6e6fa'];
+
+    // Get all sections
+    const sections = document.querySelectorAll('.section');
+
+    // Assign random background color to each section
+    sections.forEach(function(section) {
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        section.style.backgroundColor = randomColor;
+    });
+});
+function calculateTotalMarks() {
+    // Get input values
+    const mathsMarks = parseFloat(document.getElementById('maths').value) || 0; // Convert to number, default to 0 if empty
+    const englishMarks = parseFloat(document.getElementById('english').value) || 0;
+    const odiaMarks = parseFloat(document.getElementById('odia').value) || 0;
+    const socialScienceMarks = parseFloat(document.getElementById('socialScience').value) || 0;
+    const generalScienceMarks = parseFloat(document.getElementById('generalScience').value) || 0;
+    const hindiSanskritMarks = parseFloat(document.getElementById('hindiSanskrit').value) || 0;
+
+    // Calculate total marks
+    const totalMarks = mathsMarks + englishMarks + odiaMarks + socialScienceMarks + generalScienceMarks + hindiSanskritMarks;
+
+    // Display total marks
+    document.getElementById('marks').value = totalMarks;
+
+    // Calculate percentage
+    const totalSubjects = 6; // Assuming there are 6 subjects
+    const maxMarksPerSubject = 100; // Assuming each subject has a maximum of 100 marks
+    const percentage = (totalMarks / (totalSubjects * maxMarksPerSubject)) * 100;
+
+    // Display percentage with two decimal places
+    document.getElementById('percentage').value = percentage.toFixed(2); // Round to 2 decimal places
+}
+function submitPayment() {
+    // Simulate successful payment submission
+    alert("Payment submitted successfully!");
+
+    // Redirect to display-data.html after payment confirmation
+    window.location.href = 'display-data.html';
+}
+</script>
+
+</body>
+</html>
